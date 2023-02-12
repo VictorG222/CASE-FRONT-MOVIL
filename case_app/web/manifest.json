@@ -1,6 +1,6 @@
 {
-    "name": "case_app",
-    "short_name": "case_app",
+    "name": "c_a_s_e",
+    "short_name": "c_a_s_e",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
