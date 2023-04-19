@@ -13,7 +13,10 @@ class HomeAdminState extends State<HomeAdmin> {
       appBar: AppBar(
           title: const Text("Administracion",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white)),
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              )),
           backgroundColor: const Color.fromRGBO(80, 197, 253, 1)),
       body: Container(
         margin: const EdgeInsets.only(top: 55.0, bottom: 15.0),
@@ -28,7 +31,10 @@ class HomeAdminState extends State<HomeAdmin> {
               child: ListTile(
                   onTap: () => Navigator.popAndPushNamed(context, 'guardianes'),
                   title: const Text("Guardianes",
-                      style: TextStyle(color: Colors.white)),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      )),
                   trailing: const Icon(Icons.pages,
                       color: Color.fromRGBO(21, 50, 67, 1))),
             ),
@@ -43,8 +49,11 @@ class HomeAdminState extends State<HomeAdmin> {
                   borderRadius: BorderRadius.circular(10.0)),
               child: ListTile(
                 onTap: () => Navigator.popAndPushNamed(context, 'padres'),
-                title:
-                    const Text("Padres", style: TextStyle(color: Colors.white)),
+                title: const Text("Padres",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    )),
                 trailing: const Icon(Icons.pages,
                     color: Color.fromRGBO(21, 50, 67, 1)),
               ),
@@ -57,14 +66,26 @@ class HomeAdminState extends State<HomeAdmin> {
                   height: 250,
                 ),
                 FloatingActionButton.extended(
-                    onPressed: () => {},
+                    onPressed: () =>
+                        Navigator.popAndPushNamed(context, 'selectLogin'),
                     backgroundColor: Colors.red,
-                    label: const Text("Cerrar sesion")),
+                    label: const Text(
+                      "Cerrar sesion",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
                 const SizedBox(
-                  height: 10,
+                  height: 30,
                 ),
-                Image.network(
-                    "https://i0.wp.com/www.silocreativo.com/wp-content/uploads/2016/02/logotipo-zara-design.jpg?resize=666%2C250&quality=100&strip=all&ssl=1")
+                Container(
+                  margin: const EdgeInsets.only(
+                      top: 30.0, bottom: 10.0, left: 80.0, right: 80.0),
+                  child: Image.asset(
+                    'assets/img/logo-skydevs.png',
+                    fit: BoxFit.cover,
+                  ),
+                )
               ],
             ),
           ],
