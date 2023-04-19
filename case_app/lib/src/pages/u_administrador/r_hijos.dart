@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class RHijos extends StatefulWidget {
   const RHijos({super.key});
@@ -7,6 +9,60 @@ class RHijos extends StatefulWidget {
 }
 
 class RHijosState extends State<RHijos> {
+  final String _urlData = "http://192.168.137.82:8000/api";
+  List _padres = [];
+
+  Future<List<dynamic>> _getUsers() async {
+    var _url = Uri.parse('$_urlData/hijos/obtener');
+    final response = await http.get(_url);
+    final data = json.decode(response.body);
+    return data;
+  }
+
+  Future<http.Response> enviarDatos(
+    String nombre,
+    String tiposangre,
+    String turno,
+    String grupo,
+    String segurosocial,
+    int padreid,
+    String alergias,
+    String observaciones,
+  ) {
+    var url = Uri.parse('$_urlData/padres/crear');
+    return http.post(url, body: {
+      "nombre_completo": nombre,
+      "tipo_de_sangre": tiposangre,
+      "turno": turno,
+      "grupo": grupo,
+      "numero_de_seguro_social": segurosocial,
+      "se_encuentra_en_plantel": 0.toString(),
+      "padre_id": padreid.toString(),
+      "alergias": alergias,
+      "observaciones": observaciones,
+      "estatus": 0.toString()
+    });
+  }
+
+  TextEditingController _nombreController = TextEditingController();
+  TextEditingController _tiposangreController = TextEditingController();
+  TextEditingController _turnoController = TextEditingController();
+  TextEditingController _grupoController = TextEditingController();
+  TextEditingController _segurosocialController = TextEditingController();
+  TextEditingController _padreidController = TextEditingController();
+  TextEditingController _alergiasController = TextEditingController();
+  TextEditingController _observacionesController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _getUsers().then((data) {
+      setState(() {
+        _padres = data;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +82,20 @@ class RHijosState extends State<RHijos> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FloatingActionButton.extended(
-                  onPressed: () => {},
+                  onPressed: () {
+                    enviarDatos(
+                            _nombreController.text,
+                            _tiposangreController.text,
+                            _turnoController.text,
+                            _grupoController.text,
+                            _segurosocialController.text,
+                            int.parse(_padreidController.text),
+                            _alergiasController.text,
+                            _observacionesController.text)
+                        .then((response) {
+                      Navigator.popAndPushNamed(context, 'hijos');
+                    });
+                  },
                   label: const Text("Guardar"),
                   backgroundColor: const Color.fromRGBO(80, 197, 253, 1),
                 ),
@@ -38,71 +107,53 @@ class RHijosState extends State<RHijos> {
                 )
               ],
             ),
-            TextField(
-              obscureText: true,
-              decoration:
-                  const InputDecoration(labelText: '', fillColor: Colors.black),
-              onChanged: (value) {},
+            TextFormField(
+              keyboardType: TextInputType.text,
+              controller: _nombreController,
+              decoration: const InputDecoration(
+                  labelText: 'Nombre Completo:', fillColor: Colors.black),
             ),
-            TextField(
-              obscureText: true,
-              decoration:
-                  const InputDecoration(labelText: '', fillColor: Colors.black),
-              onChanged: (value) {},
+            TextFormField(
+              keyboardType: TextInputType.text,
+              controller: _tiposangreController,
+              decoration: const InputDecoration(
+                  labelText: 'Tipo de sangre:', fillColor: Colors.black),
             ),
-            TextField(
-              obscureText: true,
-              decoration:
-                  const InputDecoration(labelText: '', fillColor: Colors.black),
-              onChanged: (value) {},
+            TextFormField(
+              controller: _turnoController,
+              keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                  labelText: 'Turno:', fillColor: Colors.black),
             ),
-            TextField(
-              obscureText: true,
-              decoration:
-                  const InputDecoration(labelText: '', fillColor: Colors.black),
-              onChanged: (value) {},
+            TextFormField(
+              controller: _grupoController,
+              keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                  labelText: 'Grupo:', fillColor: Colors.black),
             ),
-            TextField(
-              obscureText: true,
-              decoration:
-                  const InputDecoration(labelText: '', fillColor: Colors.black),
-              onChanged: (value) {},
+            TextFormField(
+              controller: _segurosocialController,
+              keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                  labelText: 'Seguro social:', fillColor: Colors.black),
             ),
-            TextField(
-              obscureText: true,
-              decoration:
-                  const InputDecoration(labelText: '', fillColor: Colors.black),
-              onChanged: (value) {},
+            TextFormField(
+              controller: _padreidController,
+              keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                  labelText: 'ID del Padre:', fillColor: Colors.black),
             ),
-            TextField(
-              obscureText: true,
-              decoration:
-                  const InputDecoration(labelText: '', fillColor: Colors.black),
-              onChanged: (value) {},
+            TextFormField(
+              controller: _alergiasController,
+              keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                  labelText: 'Alergias:', fillColor: Colors.black),
             ),
-            TextField(
-              obscureText: true,
-              decoration:
-                  const InputDecoration(labelText: '', fillColor: Colors.black),
-              onChanged: (value) {},
-            ),
-            TextField(
-              obscureText: true,
-              decoration:
-                  const InputDecoration(labelText: '', fillColor: Colors.black),
-              onChanged: (value) {},
-            ),
-            TextField(
-              obscureText: true,
-              decoration:
-                  const InputDecoration(labelText: '', fillColor: Colors.black),
-              onChanged: (value) {},
-            ),
-            TextField(
-              obscureText: true,
-              decoration:
-                  const InputDecoration(labelText: '', fillColor: Colors.black),
-              onChanged: (value) {},
+            TextFormField(
+              controller: _observacionesController,
+              keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                  labelText: 'Observaciones:', fillColor: Colors.black),
             ),
           ],
         ),
